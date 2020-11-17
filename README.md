@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 # Versión de angular utilizada 10.0.6.
+=======
+# Versión de angular utilizada
+
+10.0.6
+>>>>>>> 6f83bcc2fdd2d3b9f1d53212f1c7b6f8a086a92e
 
 # Starwars
 
