@@ -1,2 +1,31 @@
-<p class="h1">Ordenado por {{ordenamiento}}</p>
-<app-cartapersonaje [name]="personaje.name" [created]="personaje.created" [gender]="personaje.gender" [height]="personaje.height" [mass]="personaje.mass" *ngFor="let personaje of personajes"></app-cartapersonaje>
+<div *ngIf="bloquear" class="bloqueador">
+    <div class="wait">
+    </div>
+</div>
+
+<div *ngIf="!bloquear">
+    <p class="h1">Ordenado por {{ordenamiento}}</p>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Aparición</th>
+                <th scope="col">Genero</th>
+                <th scope="col">Altura</th>
+                <th scope="col">Peso</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let personaje of personajes, let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{personaje.name}}</td>
+                <td>{{personaje.created | date: 'dd/MM/yyyy'}}</td>
+                <td>{{personaje.gender}}</td>
+                <td>{{personaje.height}}</td>
+                <td>{{personaje.mass}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -7,7 +7,8 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
 export const RUTAS: Routes = [
     { path: 'inicio', component: InicioComponent },
     { path: 'personaje/:nombre', component: PersonajeComponent },
-    { path: 'personajes/:criterio', component: PersonajesComponent },
+    // { path: 'personajes/:criterio', component: PersonajesComponent },
+    { path: 'personajes', component: PersonajesComponent },
     { path: 'residentes', component: ResidentesComponent },
     { path: '', pathMatch: 'full', redirectTo: 'inicio' },
     { path: '**', pathMatch: 'full', redirectTo: 'inicio' }

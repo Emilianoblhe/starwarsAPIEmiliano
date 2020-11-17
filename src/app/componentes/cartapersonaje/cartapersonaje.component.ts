@@ -13,6 +13,7 @@ export class CartapersonajeComponent implements OnInit {
   @Input() gender: string;
   @Input() height: string;
   @Input() mass: string;
+  @Input() planeta: string;
 
   constructor() { }
 

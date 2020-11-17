@@ -11,54 +11,54 @@ export class ResidentesComponent implements OnInit {
 
   personajes: any[] = [];
   personajePlaneta: Personaje[] = [];
-  constructor(private starWarsService: StarwarsserviceService) {
-    this.starWarsService.obtenerPersonajes()
-      .subscribe(
-        (response: any) => {
-          this.personajes = response;
-        }, e => {
+  bloquear: boolean;
 
-        }, () => {
-          this.personajes.forEach(personaje => {
-            this.obtenrPlaneta(personaje.homeworld, personaje.name, personaje.created, personaje.gender, personaje.height, personaje.mass);
-          });
-          this.personajePlaneta = this.personajePlaneta.sort(this.ordenarNombre);
-          console.log(this.personajePlaneta);
-          console.log('aqquu');
-        }
-      );
+  constructor(private starWarsService: StarwarsserviceService) {
+
+    this.bloquear = true;
+    this.starWarsService.getPeople()
+                  .subscribe(
+                      (response: any) => {
+                        response.map(x => {
+                          this.personajes.push(x);
+                        });
+                      }, e => {
+                        this.bloquear = false;
+                      }, () => {
+                        this.personajes.map(x => {
+                          this.starWarsService.obtenerPlaneta(x.homeworld)
+                            .subscribe(
+                              (response: any) => {
+
+                                let p: Personaje = {
+                                  name: x.name,
+                                  created: x.created,
+                                  gender: x.gender,
+                                  height: x.height,
+                                  mass: x.mass,
+                                  planeta: response.name
+                                };
+                                this.personajePlaneta.push(p);
+                              }, e => {
+                                this.bloquear = false;
+                              }, () => {
+                                this.personajePlaneta = this.personajePlaneta.sort(this.ordenarPlaneta);
+                                this.bloquear = false;
+                              }
+                            );
+                        });
+                        this.bloquear = false;
+                      }
+                    );
+
   }
 
   ngOnInit(): void {
   }
 
-  obtenrPlaneta(url: string, name: string, created: string, gender: string, height: string, mass: string): void {
-    let planeta: any;
-    this.starWarsService.obtenerPlaneta(url)
-    .subscribe(
-      (response: any) => {
-        planeta = response;
-      }, e => {
-
-      }, () => {
-        let p: Personaje = {
-          name: name,
-          created: created,
-          gender: gender,
-          height: height,
-          mass: mass,
-          planeta: planeta.name
-        };
-        this.personajePlaneta.push(p);
-      }
-    );
-  }
-
-  ordenarNombre(a, b) {
+  ordenarPlaneta(a, b) {
     const planeta1 = a.planeta.toUpperCase();
     const planeta2 = b.planeta.toUpperCase();
-    console.log(planeta1);
-    console.log(planeta2);
 
     let compara = 0;
     if (planeta1 > planeta2) {
@@ -71,10 +71,10 @@ export class ResidentesComponent implements OnInit {
 }
 
 class Personaje {
-  name: string;
-  created: string;
-  gender: string;
-  height: string;
-  mass: string;
-  planeta: string;
+  public name: string;
+  public created: string;
+  public gender: string;
+  public height: string;
+  public mass: string;
+  public planeta: string;
 }

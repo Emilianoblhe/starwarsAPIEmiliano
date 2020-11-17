@@ -13,23 +13,29 @@ export class PersonajesComponent implements OnInit {
   private query: string;
   personajes: any[] = [];
   ordenamiento: string;
+  bloquear: boolean;
   constructor(private activateRoute: ActivatedRoute,
               private starWarsService: StarwarsserviceService) {
-                this.activateRoute.params.subscribe(x => {
-                  this.query = x['criterio'];
-                  this.starWarsService.obtenerPersonajes()
-                  .subscribe(
-                    (response: any) => {
-                      this.personajes = response;
-                    }, e => {
 
-                    }, () => {
-                      this.ordenarPersonajes(this.query);
-                    }
-                  );
+                this.bloquear = true;
+                this.activateRoute.queryParams.subscribe(params => {
+                  this.query = params['ordenar'];
+                  // FALTA VALIDAR SI NO HAY UN PARAMETRO, MANDARLO AL
+                  this.starWarsService.getPeople()
+                  .subscribe(
+                      (response: any) => {
+                        response.map(x => {
+                          this.personajes.push(x);
+                        })
+                      }, e => {
+                        this.bloquear = false;
+                      }, () => {
+                        this.ordenarPersonajes(this.query);
+                        this.bloquear = false;
+                      }
+                    );
                 });
               }
-
   ngOnInit(): void {
   }
 
@@ -67,8 +73,17 @@ export class PersonajesComponent implements OnInit {
   }
 
   ordenarPeso(a, b) {
-    const numero1 = parseInt(a.mass);
-    const numero2 = parseInt(b.mass);
+
+    let numero1 = 0;
+    let numero2 = 0;
+    try{
+      numero1 = parseInt(a.mass);
+      numero2 = parseInt(b.mass);
+    }
+    catch {
+      numero1 = 0;
+      numero2 = 0;
+    }
 
     let compara = 0;
     if (numero1 > numero2) {

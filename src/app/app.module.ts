@@ -7,7 +7,6 @@ import { PersonajesComponent } from './componentes/personajes/personajes.compone
 import { ResidentesComponent } from './componentes/residentes/residentes.component';
 import { NavbarComponent } from './compartidos/navbar/navbar.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
-import { Router, Routes } from '@angular/router';
 import { APP_ROUTING } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { CartapersonajeComponent } from './componentes/cartapersonaje/cartapersonaje.component';
